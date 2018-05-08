@@ -255,12 +255,12 @@ function compileSource(source) {
   var solc = require("solc");
   var optimize = (program.optimize === true ? 1 : 0);
   var output = solc.compile(source, optimize);
-
+  var result = {};
   if (output.errors) {
     if (!program.outputDir && background !== true) {
       process.stdout.write(JSON.stringify(output));
     }
-    return output;
+    result.errors = output.errors;
   }
 
   var allContractData = {};
@@ -308,7 +308,8 @@ function compileSource(source) {
     process.stdout.write(JSON.stringify(allContractData));
   }
 
-  return allContractData;
+  result.contracts = allContractData;
+  return result;
 }
 
 main();
